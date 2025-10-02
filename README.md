@@ -56,3 +56,21 @@ See corrupted text like above? Help us fix it! Open an issue or submit a PR.
 
 ---
 **Ready to contribute?** Read our [Contribution Guidelines](CONTRIBUTING.md)
+
+## 👥 Current Contributors
+
+| Role | Contributor | Focus Area |
+|------|-------------|------------|
+| Project Lead | [@Olagoldstx](https://github.com/Olagoldstx) | AWS Content, Course Structure |
+| Azure Expert | *Your Name Here* | Azure Labs & Modules |
+| GCP Expert | *Your Name Here* | GCP Labs & Modules |
+| Content Reviewer | *Your Name Here* | Quality Assurance |
+
+## 🆕 How to Join
+
+We need help with:
+- 🔷 **Azure Labs** - Building step-by-step Azure AD tutorials
+- 🔶 **GCP Labs** - Creating service account labs  
+- 🎨 **Diagrams** - Visual learning aids
+- 📝 **Content Review** - Checking clarity and accuracy
+
