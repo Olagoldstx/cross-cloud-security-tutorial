@@ -1,0 +1,17 @@
+%% End-to-end data protection across clouds
+sequenceDiagram
+  autonumber
+  participant U as User/Service
+  participant I as IAM/Federation
+  participant K as Key Management (KMS/Key Vault)
+  participant S as Storage (S3/GCS/Blob)
+  participant L as Logging/SIEM
+
+  U->>I: Authenticate (MFA/OIDC/SAML)
+  I-->>U: Token/Creds with least privilege
+  U->>K: Request data key (envelope)
+  K-->>U: DEK (wrapped) + policy context
+  U->>S: Read/Write object (encrypted)
+  S-->>U: Success (policy & condition checks)
+  S->>L: Audit event (who/what/when/where)
+  L-->>I: Feedback for policy tuning (Zero Trust)

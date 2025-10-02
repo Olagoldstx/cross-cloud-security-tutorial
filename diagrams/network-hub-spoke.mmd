@@ -1,0 +1,40 @@
+%% Hub-and-spoke across clouds with secure edges
+flowchart TB
+  subgraph OnPrem[On-Prem / Branch]
+    SDWAN[SD-WAN/Edge FW]
+  end
+
+  subgraph HUB[Cloud HUB (Transit)]
+    TGW[AWS TGW]
+    VWAN[Azure vWAN]
+    NCC[GCP NCC (Cloud Router)]
+  end
+
+  SDWAN <--> HUB
+
+  subgraph AWS_SPOKES[AWS Spokes]
+    VPC1[VPC-App1]
+    VPC2[VPC-App2]
+  end
+
+  subgraph AZ_SPOKES[Azure Spokes]
+    VNET1[VNet-App1]
+    VNET2[VNet-App2]
+  end
+
+  subgraph GCP_SPOKES[GCP Spokes]
+    VPCG1[VPC-App1]
+    VPCG2[VPC-App2]
+  end
+
+  HUB --> TGW --> VPC1
+  TGW --> VPC2
+  HUB --> VWAN --> VNET1
+  VWAN --> VNET2
+  HUB --> NCC --> VPCG1
+  NCC --> VPCG2
+
+  %% Security insertions
+  FW_A[NGFW / IDS/IPS] -.inline.- TGW
+  FW_Z[NGFW / IDS/IPS] -.inline.- VWAN
+  FW_G[NGFW / IDS/IPS] -.inline.- NCC

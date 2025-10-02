@@ -1,0 +1,57 @@
+%% Zero Trust applied across clouds
+flowchart LR
+  U[User/Workload Identity] --> P[Policy Decision Point (PDP)]
+  P --> E[Policy Enforcement Points (PEPs)]
+
+  subgraph PDP[Policy Decision]
+    IGA[Identity Governance]
+    CA[Continuous AuthN/Z]
+    DSP[Data Sensitivity & Posture]
+  end
+
+  subgraph AWS
+    PEP_A1[WAF/ALB + SGs]
+    PEP_A2[IAM Conditions]
+    PEP_A3[KMS + S3 Policies]
+  end
+
+  subgraph AZURE
+    PEP_Z1[Defender for Cloud]
+    PEP_Z2[NSGs/ASGs]
+    PEP_Z3[Key Vault Policies]
+  end
+
+  subgraph GCP
+    PEP_G1[Org Policy]
+    PEP_G2[VPC Firewall]
+    PEP_G3[KMS + IAM Conditions]
+  end
+
+  E --> PEP_A1
+  E --> PEP_A2
+  E --> PEP_A3
+  E --> PEP_Z1
+  E --> PEP_Z2
+  E --> PEP_Z3
+  E --> PEP_G1
+  E --> PEP_G2
+  E --> PEP_G3
+
+  %% Telemetry feedback loop
+  subgraph Telemetry
+    LOG[Unified Logs/Traces]
+    SIEM[SIEM/SOAR]
+    DSPM[Data Security Posture]
+  end
+
+  PEP_A1 --> LOG
+  PEP_A2 --> LOG
+  PEP_A3 --> LOG
+  PEP_Z1 --> LOG
+  PEP_Z2 --> LOG
+  PEP_Z3 --> LOG
+  PEP_G1 --> LOG
+  PEP_G2 --> LOG
+  PEP_G3 --> LOG
+  LOG --> SIEM --> P
+  LOG --> DSPM --> P

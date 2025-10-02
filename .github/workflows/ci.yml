@@ -1,0 +1,13 @@
+name: Build PDFs
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Binder PDFs
+        run: echo "Placeholder for PDF build workflow"

@@ -1,0 +1,23 @@
+%% Compare IAM models side-by-side
+classDiagram
+  class AWS_IAM {
+    +User/Group
+    +Role (assumable)
+    +Policy (JSON)
+    +STS (temp creds)
+  }
+  class AZURE_Entra {
+    +User/Group/Service Principal
+    +App Registration
+    +RBAC Role Assignment
+    +Conditional Access
+  }
+  class GCP_IAM {
+    +Principal (user, SA)
+    +Role (basic/predef/custom)
+    +Policy (bindings)
+    +Workload Identity
+  }
+  AWS_IAM <..> AZURE_Entra : Federation/SSO
+  AWS_IAM <..> GCP_IAM : OIDC/Workload Identity
+  AZURE_Entra <..> GCP_IAM : SAML/OIDC

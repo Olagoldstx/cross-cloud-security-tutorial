@@ -1,0 +1,52 @@
+%% IAM at the center with interlocking dependencies across AWS, Azure, GCP
+flowchart TD
+  IAM[Identity & Access Management (Trust Fabric)]:::core
+
+  subgraph AWS[Amazon Web Services]
+    A_IAM[AWS IAM: Users/Groups/Roles/Policies]
+    A_STS[STS]
+    A_S3[S3]
+    A_EC2[EC2]
+    A_KMS[KMS]
+  end
+
+  subgraph AZ[Microsoft Azure]
+    Z_AAD[Entra ID (Azure AD)]
+    Z_RBAC[Azure RBAC]
+    Z_VAULT[Key Vault]
+    Z_VNET[VNet/NSGs]
+    Z_VM[Azure VM]
+  end
+
+  subgraph GCP[Google Cloud Platform]
+    G_IAM[GCP IAM: Principals/Roles/Policies]
+    G_SA[Service Accounts]
+    G_KMS[Cloud KMS]
+    G_VPC[VPC + Firewall]
+    G_GCS[GCS]
+    G_GCE[Compute Engine]
+  end
+
+  IAM --- A_IAM
+  IAM --- Z_AAD
+  IAM --- G_IAM
+
+  %% Interlocks to security-sensitive services
+  A_IAM --> A_KMS
+  Z_AAD --> Z_VAULT
+  G_IAM --> G_KMS
+
+  %% Storage/Compute guarded by IAM
+  A_IAM --> A_S3
+  A_IAM --> A_EC2
+  Z_RBAC --> Z_VAULT
+  Z_RBAC --> Z_VM
+  G_SA --> G_GCS
+  G_SA --> G_GCE
+
+  %% Federation / SSO links
+  IAM -. Federation/SSO .- Z_AAD
+  IAM -. AssumeRole/STS .- A_IAM
+  IAM -. Workload Identity .- G_SA
+
+classDef core fill:#f9f,stroke:#333,stroke-width:1px;
